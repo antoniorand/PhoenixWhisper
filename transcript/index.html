@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Video.js Transcript</title>
+
+  <link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+  <link href="style.css" title="Example 1" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .info {
+      background-color: #eee;
+      border: thin solid #333;
+      border-radius: 3px;
+      padding: 0 5px;
+      text-align: center;
+    }
+    .video-js {
+      margin: 40px auto;
+    }
+  </style>
+  <script src="//vjs.zencdn.net/4.12/video.js"></script>
+  <script src="script.js"></script>
+  </head>
+  <body>
+  <div class="video-container">
+    <video id="video"
+           class="video-js vjs-default-skin"
+           height="300"
+           width="600"
+           controls>
+      <p>
+        Your browser doesn't support video. Please <a href="http://browsehappy.com/">upgrade your browser</a> to see the example.
+      </p>
+      <source src="http://www.openbeelden.nl/files/92/104101.ed_hd.mp4" type="video/mp4">
+      <track kind="captions" src="captions.en.vtt" srclang="en" label="English" default>
+      <track kind="captions" src="captions.en.vtt" srclang="sv" label="Swedish">
+      <track kind="captions" src="captions.en.vtt" srclang="ru" label="Russian">
+    </video>
+    <div id="transcript"></div>
+  </div>
+  
+  <script>
+    var video = videojs('video');
+
+    // fire up the plugin
+    var transcript = video.transcript();
+
+    // attach the widget to the page
+    var transcriptContainer = document.querySelector('#transcript');
+    transcriptContainer.appendChild(transcript.el());
+  </script>
+</body>
+</html>
