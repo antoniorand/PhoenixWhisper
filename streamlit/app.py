@@ -3,6 +3,7 @@ import whisper
 import json 
 from pytube import YouTube
 import os
+import torch
 
 st.set_page_config(layout="wide", page_title="YouTube Transcription")
 
@@ -27,7 +28,7 @@ def transcribe_from_link(link):
 		video = yt.streams.filter(only_audio=True).first()
 		
 		# # check for destination to save file
-		destination = '.'
+		destination = './streamlit/transcripts'
 		
 		# download the file
 		out_file = video.download(output_path=destination)
@@ -45,7 +46,9 @@ def transcribe_from_link(link):
 
 		# check if file exists
 		if not os.path.exists(json_file):
-			model = whisper.load_model("tiny")
+			torch.cuda.is_available()
+			DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+			model = whisper.load_model("tiny", device=DEVICE)
 			result = model.transcribe(new_file)
 			# transcription = result['text']
 			st.session_state['transcript'] = result['text']
