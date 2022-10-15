@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+  </head>
+  <body>
+    <div class="wrapper activity media activity-wrapper video" data-show-transcript-at-start="false">
+        <div class="video-and-transcript-wrapper">
+            <div class="video-wrapper">
+                <div align="center" class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" controls="controls" controlslist="nodownload" data-autoplay-on-select="true" crossorigin="anonymous" data-showing-captions="false">
+                        <source src="{{url_for('static', filename='video.mp4')}}" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <div class="transcript-wrapper group">
+                <div class="transcript-middle">
+                    <div class="transcript-inner"></div>
+                </div>
+            </div>
+        </div>
+        <div class="video-toolbar">
+            <button class="btn-toggle-transcript">Show transcript</button>
+        </div>
+        <ol class="media-library hide-on-load">
+            <li class="media-library-item col-sm-3">
+                <button class="media-library-item-btn" data-video-src="{{url_for('static', filename='video.mp4')}}"
+                    data-captions-src="{{url_for('static', filename='sample.vtt')}}" data-transcript-src="{{url_for('static', filename='sample.vtt')}}">                  
+                </button>
+            </li>
+        </ol>
+    </div>
+
+    <!-- <div class="wrapper activity media activity-wrapper video" data-show-transcript-at-start="false">
+        <div class="video-and-transcript-wrapper">
+            <div class="video-wrapper">
+                <div align="center" class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" controls="controls" controlslist="nodownload" data-autoplay-on-select="true" poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9487/sample-video-poster-01.jpg" crossorigin="anonymous" data-showing-captions="false">
+                        <source src="" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <div class="transcript-wrapper group">
+                <div class="transcript-middle">
+                    <div class="transcript-inner"></div>
+                </div>
+            </div>
+        </div>
+        <div class="video-toolbar">
+            <button class="btn-toggle-transcript">Show transcript</button>
+        </div>
+        <ol class="media-library hide-on-load">
+            <li class="media-library-item col-sm-3">
+                <button class="media-library-item-btn" data-video-src="https://player.vimeo.com/external/215175080.hd.mp4?s=5b17787857fd95646e67ad0f666ea69388cb703c&amp;profile_id=119" data-poster-src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9487/sample-video-poster-01.jpg"
+                    data-captions-src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9487/sample-captions-01.vtt" data-transcript-src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9487/sample-chapters-01.vtt">                  
+                </button>
+            </li>
+        </ol>
+    </div> -->
+    
+  </body>
+</html>
