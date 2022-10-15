@@ -1,10 +1,12 @@
-streamlit/venv
-streamlit/ffmpeg.exe
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# large files
+ffmpeg.exe
+ffprobe.exe
+ffplay.exe
 
 # C extensions
 *.so
@@ -112,6 +114,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.vscode
+.git 
 
 # Spyder project settings
 .spyderproject
@@ -130,3 +134,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.DS_Store
