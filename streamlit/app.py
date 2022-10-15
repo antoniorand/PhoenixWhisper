@@ -45,7 +45,7 @@ def transcribe_from_link(link):
 
 		# check if file exists
 		if not os.path.exists(json_file):
-			model = whisper.load_model("small")
+			model = whisper.load_model("tiny")
 			result = model.transcribe(new_file)
 			# transcription = result['text']
 			st.session_state['transcript'] = result['text']
