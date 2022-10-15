@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+#Test files
+backend/pacer
+backend/python-html-button
+backend/testTranscribe
+backend/testResource
