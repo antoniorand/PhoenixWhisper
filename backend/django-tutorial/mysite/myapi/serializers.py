@@ -5,10 +5,10 @@
 # serializers.py
 from rest_framework import serializers
 
-from .models import Hero
+from .models import Transcription
 
-class HeroSerializer(serializers.HyperlinkedModelSerializer):
+class TranscriptionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Hero
-        fields = ('id', 'name', 'alias')
+        model = Transcription
+        fields = ('id','url', 'title','main_text','language')
 

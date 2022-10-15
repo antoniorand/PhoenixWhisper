@@ -3,10 +3,10 @@
 
 from rest_framework import viewsets
 
-from .serializers import HeroSerializer
-from .models import Hero
+from .serializers import TranscriptionSerializer
+from .models import Transcription
 
 
-class HeroViewSet(viewsets.ModelViewSet):
-    queryset = Hero.objects.all().order_by('name')
-    serializer_class = HeroSerializer
+class TranscriptionViewSet(viewsets.ModelViewSet):
+    queryset = Transcription.objects.all().order_by('title')
+    serializer_class = TranscriptionSerializer
