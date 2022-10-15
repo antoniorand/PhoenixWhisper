@@ -5,10 +5,10 @@
 # serializers.py
 from rest_framework import serializers
 
-from .models import Hero
+from .models import Youtube
 
-class HeroSerializer(serializers.HyperlinkedModelSerializer):
+class YTSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Hero
-        fields = ('id', 'name', 'alias')
+        model = Youtube
+        fields = ('id', 'URL')
 
