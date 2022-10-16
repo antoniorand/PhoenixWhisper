@@ -1,4 +1,4 @@
-# Phoenix Whisper
+# PhoenixWhisper
 
 ### About
 This is the project using OpenAI Whisper with GPT/MTM language model to create <b>a language learning platform</b> that lets you watch your favorite YouTube videos with dual interactive transcripts
