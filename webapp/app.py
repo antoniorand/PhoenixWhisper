@@ -6,7 +6,7 @@ from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 import openai
 
 app = Flask(__name__)
-lang_dict = {'en': 'English', 'de': 'German', 'fr': 'French', 'es': 'Spanish', 'vi': 'Vietnamese', 'sv': 'Swedish'}
+lang_dict = {'en': 'English', 'de': 'German', 'fr': 'French', 'es': 'Spanish', 'vi': 'Vietnamese', 'sv': 'Swedish', 'el': 'Greek'}
 
 # set file path
 webapp_path = os.path.dirname(os.path.realpath(__file__))
