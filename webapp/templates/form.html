@@ -7,13 +7,15 @@
     <div class="">
     <form action="/submit" method="post">
       <p>Enter YouTube video:</p>
-      <p><input type="text" name="url" /></p>
-      <p>Choose translation (es, de):</p>
-      <p><input type="text" name="target_lan" /></p>
+      <p><input required type="text" name="url" /></p>
+      <p>Choose translation (es, de, fr, vi, sv):</p>
+      <p><input required type="text" name="target_lan" /></p>
       <p>Enter OpenAI API key:</p>
       <p><input type="text" name="openai_apikey" /></p>
-      <p>Translation model {gpt, mtm}:</p>
+      <p>Translation model (gpt, mtm):</p>
       <p><input type="text" name="translation_model" /></p>
+      <p>Initial Prompt for "Todays is a beautiful day":</p>
+      <p><input type="text" name="initial_prompt" /></p>
       <p id="test"><input type="submit" value="submit" /></p>
       <p id="waiting" style="display: none;">Please wait...</p>
       <br />
