@@ -12,7 +12,7 @@ This is the project using OpenAI Whisper with GPT/MTM language model to create <
 1. Use OpenAI GPT
   - Choose GPT as the translation model
   - Enter your API key, you can get one from your dashboard
-  - The "Initial Prompt" is the translation of "Today is a beautiful day" in the language that you chose above. For example, if I choose "vi" (which stands for Vietnamese), I need to write "Hôm nay trời đẹp quá" as the answer (the translation of "Today is a beautiful day" in Vietnamese) for this section
+  - The "Initial Prompt" is the translation of "Today is a beautiful day" in the language that you chose above. For example, if I choose "vi" (which stands for Vietnamese), I need to write "Hôm nay trời đẹp quá" as the answer (the translation of "Today is a beautiful day" in Vietnamese)
 2. Using Meta's language model MTM
   - Just click submit after you write the URL and the language code. You're done! :)
 
