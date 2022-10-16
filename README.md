@@ -7,7 +7,7 @@ This is the project using OpenAI Whisper with GPT/MTM language model to create a
 ![App Interface](transcript.png)
 
 ## User Guide
-<b> There are two options to translate your favorite YouTube video. </b>In both cases, you will need a valid YouTube URL and a language code in [2 letter](https://www.andiamo.co.uk/resources/iso-language-codes/) that you want the translation, then if you 
+<b> There are two options to translate your favorite YouTube video. </b>In both cases, you will need a valid YouTube URL and a language code in [2 letters](https://www.andiamo.co.uk/resources/iso-language-codes/) that you want the translation, then if you 
 1. Use OpenAI GPT
   - Choose GPT as the translation model
   - Enter your API key, you can get one from your dashboard
