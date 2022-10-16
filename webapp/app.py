@@ -2,14 +2,11 @@ from flask import Flask, redirect, url_for, request, render_template
 from pytube import extract, YouTube
 import os, whisper, json
 import datetime
-import pathlib
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-# import openai
-
-#this is a comment
+import openai
 
 app = Flask(__name__)
-lang_dict = {'en': 'English', 'de': 'German', 'fr': 'French', 'es': 'Spanish'}
+lang_dict = {'en': 'English', 'de': 'German', 'fr': 'French', 'es': 'Spanish', 'vi': 'Vietnamese', 'sv': 'Swedish'}
 
 # set file path
 webapp_path = os.path.dirname(os.path.realpath(__file__))
@@ -47,8 +44,8 @@ def timedelta_to_videotime(delta):
     final_data = ".".join(parts2)
     return final_data
 
-def translate_text(output, target_lan = "es", translation_model = "mtm", openai_apikey="") -> str:
-    if translation_model == 'mtm':
+def translate_text(output, target_lan = "es", translation_model = "mtm", openai_apikey="", initial_prompt="") -> str:
+    if translation_model == "" or translation_model == 'mtm':
         # translate 
         tokenizer.src_lang = output["language"]
 
@@ -62,28 +59,47 @@ def translate_text(output, target_lan = "es", translation_model = "mtm", openai_
 
             output['segments'][k]["text"] += f" ({tgt_text[0]})"
             output['segments'][k]["tokens"] = []
+            # print(output['segments'][k]["text"])
 
-    # if translation_model == 'gpt' and openai_apikey != "":
-    #     openai.api_key = openai_apikey
-    #     src_lang = output["language"]
-    #     # prompt
-    #     prompt_base = 'Translate '+lang_dict[src_lang]+' to '+ lang_dict[target_lan]+ ': \n\n Todays is a beautiful day => Heute ist ein schöner Tag \n\n '
-    #     # append text to prompt
-    #     prompt = prompt_base + text + " => "
+    if translation_model == 'gpt' and openai_apikey != "":
+        openai.api_key = openai_apikey
+        src_lang = output["language"]
 
-    #     # Note: rule of thumb to avoid random continuation
-    #     max_tokens = 6*len(text.split())
+        src_language = "en"
+        target_language = "es"
 
-    #     response = openai.Completion.create(
-    #     model="text-curie-001", # text-davinci-002 -> bigger model for later
-    #     prompt=prompt,
-    #     temperature=0.1,
-    #     max_tokens=max_tokens,
-    #     top_p=1.0,
-    #     frequency_penalty=0.0,
-    #     presence_penalty=0.0
-    #     )
-    #     translation = response['choices'][0]['text']
+        if src_lang in lang_dict:
+            src_language = lang_dict[src_lang]
+        
+        if target_lan in lang_dict:
+            target_language = lang_dict[target_lan]
+
+        # prompt
+        prompt_base = 'Translate '+ src_language +' to '+ target_language + f': \n\n Todays is a beautiful day => {initial_prompt} \n\n '
+        
+        # loop through transcription and translate
+        for k, item in enumerate(output['segments']):
+            text = item['text']
+
+            # append text to prompt
+            prompt = prompt_base + text + " => "
+
+            # Note: rule of thumb to avoid random continuation
+            max_tokens = 6*len(text.split())
+
+            response = openai.Completion.create(
+                model="text-curie-001", # text-davinci-002 -> bigger model for later
+                prompt=prompt,
+                temperature=0.1,
+                max_tokens=max_tokens,
+                top_p=1.0,
+                frequency_penalty=0.0,
+                presence_penalty=0.0
+            )
+            output['segments'][k]["text"] += f" ({response['choices'][0]['text']})"
+            output['segments'][k]["tokens"] = []
+
+            # print(output['segments'][k]["text"])
     
     return output['segments']
 
@@ -107,56 +123,78 @@ def whisper_segments_to_vtt_data(result_segments):
   return data
 
 
-def transcribe_from_link(link, target_lan, openai_apikey, translation_model):
-	if link != "":
-		print("Transcribing...")	
-		yt = YouTube(link)
-		yt.streams.filter(only_audio=True).first()
-		
-		# # check for destination to save file
-		destination = os.path.join(webapp_path, 'static', 'resources')
-		id = extract.video_id(link)
-		
-		# download the file
-		out_file = yt.streams.filter(progressive = True, file_extension = "mp4").first().download(output_path=destination, filename = id + ".mp4")
-
-		print(yt.title + " has been downloaded successfully")
-
-		# save the file
-		base, ext = os.path.splitext(out_file)
-		file_mp4 = base + '.mp4'
-
-		# result of success
-		json_file = base + ".vtt"
+def transcribe_from_link(link, target_lan, openai_apikey, translation_model, initial_prompt):
+    if link != "":
+        print("Transcribing...")	
+        yt = YouTube(link)
+        yt.streams.filter(only_audio=True).first()
         
-		# check if file exists
-		if not os.path.exists(json_file):
-            # if vtt file does not exist, we create it
-			model = whisper.load_model("tiny")
-			result = model.transcribe(file_mp4)
-            
-            # Save original caption_data
-			caption_data = whisper_segments_to_vtt_data(result['segments'])
-			file_vtt = base + '.vtt'
-			export_file = pathlib.Path(file_vtt)
-			export_file.write_text(caption_data)
+        # # check for destination to save file
+        destination = os.path.join(webapp_path, 'static', 'resources')
+        id = extract.video_id(link)
+        
+        # download the file
+        out_file = yt.streams.filter(progressive = True, file_extension = "mp4").first().download(output_path=destination, filename = id + ".mp4")
 
-			# json_object = json.dumps(result, indent=4)
-			# with open(base + ".json", "w") as outfile:
-			# 	outfile.write(json_object)
+        print(yt.title + " has been downloaded successfully")
 
-			with open(os.path.join(webapp_path, "video_list.txt"), "a") as file_object:
-				file_object.write(f"{yt.title}: {link}\n")
+        # save the file
+        base, ext = os.path.splitext(out_file)
+        file_mp4 = base + '.mp4'
 
-			output = translate_text(output=result, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model)
+        # result of success
+        lan_file = base + f".{target_lan}.vtt"
+        vtt_file = base + ".vtt"
+        json_file = base + ".json"
 
-            # Save translation file_vtt
-			caption_data = whisper_segments_to_vtt_data(output)
-			translate_vtt = base + f'.{target_lan}.vtt'
-			with open(translate_vtt, "w", encoding='utf-8') as outfile:
-				outfile.write(caption_data)
+        # check if file exists
+        if not os.path.exists(lan_file):
+            if not os.path.exists(json_file):
+                # if vtt file does not exist, we create it
+                model = whisper.load_model("tiny")
+                result = model.transcribe(file_mp4)
 
-		return base
+                # Save original caption_data
+                caption_data = whisper_segments_to_vtt_data(result['segments'])
+                file_vtt = base + '.vtt'
+                with open(file_vtt, "w", encoding='utf-8') as outfile:
+                    outfile.write(caption_data)
+                
+                # save the caption for the original language
+                with open(base + f'.{result["language"]}.vtt', "w", encoding='utf-8') as outfile:
+                    outfile.write(caption_data)
+
+                print(yt.title + ": Transcript has been successfully generated")
+
+                json_object = json.dumps(result, indent=4)
+                with open(json_file, "w", encoding="utf-8") as outfile:
+                    outfile.write(json_object)
+                    
+                with open(os.path.join(webapp_path, "video_list.txt"), "a") as file_object:
+                    file_object.write(f"{yt.title}: {link}\n")
+
+                if result["language"] != target_lan: # check if original language is different from target language
+                    output = translate_text(output=result, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model, initial_prompt=initial_prompt)
+
+                    # Save translation file_vtt
+                    caption_data = whisper_segments_to_vtt_data(output)
+                    translate_vtt = base + f'.{target_lan}.vtt'
+                    with open(translate_vtt, "w", encoding='utf-8') as outfile:
+                        outfile.write(caption_data)
+
+            else: 
+                # read json file and generate translated caption
+                f = open(json_file)
+                data = json.load(f)   
+                output = translate_text(output=data, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model, initial_prompt=initial_prompt)
+
+                # Save translation file_vtt
+                caption_data = whisper_segments_to_vtt_data(output)
+                translate_vtt = base + f'.{target_lan}.vtt'
+                with open(translate_vtt, "w", encoding='utf-8') as outfile:
+                    outfile.write(caption_data)
+                    
+        return base
  
 
 @app.route('/submit', methods=['POST', 'GET'])
@@ -167,10 +205,11 @@ def login():
         target_lan = request.form['target_lan']
         openai_apikey = request.form['openai_apikey']
         translation_model = request.form['translation_model']
+        initial_prompt = request.form['initial_prompt']
         id=extract.video_id(url)
 
         # start transcribe
-        base = transcribe_from_link(link=url, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model)
+        base = transcribe_from_link(link=url, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model, initial_prompt=initial_prompt)
         print(f"Generating trascript DONE at {base}")
         return redirect(url_for('success', name=id, target_lan=target_lan))
 
