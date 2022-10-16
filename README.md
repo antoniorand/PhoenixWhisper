@@ -3,6 +3,8 @@ This is the project for an OpenAI Whisper and GPT/MTM use case: a language learn
 
 Creating a Virtual Environment:
 ```bash
+cd webapp
+
 python -m venv venv
 
 source venv/Scripts/activate (Windows)
@@ -17,7 +19,5 @@ pip install git+https://github.com/openai/whisper.git -q
 
 Open web app
 ```bash
-cd webapp
-
 python app.py or flask run
 ```
