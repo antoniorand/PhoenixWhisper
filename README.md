@@ -15,7 +15,7 @@ This is the project using OpenAI Whisper with GPT/MTM language model to create a
 2. Using Meta's language model MTM
   - Just click submit after you write the URL and the language code. You're done! :)
 
-Now let's make some coffee while our backend generate the transcripts for you. After the page is generated, enjoy the script! :heart_eyes: 
+Now let's make some coffee while our backend generates the transcripts for you. After the page is ready, enjoy the script! :heart_eyes: (and your coffee too)
 ## Installation
 
 Creating virtual environment:
