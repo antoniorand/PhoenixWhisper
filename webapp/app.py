@@ -4,8 +4,10 @@ import os, whisper, json
 import datetime
 import pathlib
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
+import openai
 
 app = Flask(__name__)
+lang_dict = {'en': 'English', 'de': 'German', 'fr': 'French', 'es': 'Spanish'}
  
 webapp_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -39,9 +41,33 @@ def timedelta_to_videotime(delta):
     final_data = ".".join(parts2)
     return final_data
 
-def translate_text(text: str, src_lang: str, target_lang: str, translator: str) -> str:
-        # facebook multi lingual translation model
-    if translator == 'mtm':
+def translate_text(text: str, src_lang: str, target_lang: str, openai_apikey, translator: str) -> str:
+    if translator == 'gpt' and openai_apikey:
+        # 
+        openai.api_key = openai_apikey
+
+        # prompt
+        prompt_base = 'Translate '+lang_dict[src_lang]+' to '+ lang_dict[target_lang]+ ': \n\n Todays is a beautiful day => Heute ist ein schöner Tag \n\n '
+        # append text to prompt
+        prompt = prompt_base + text + " => "
+
+        # Note: rule of thumb to avoid random continuation
+        max_tokens = 6*len(text.split())
+
+        response = openai.Completion.create(
+        model="text-curie-001", # text-davinci-002 -> bigger model for later
+        prompt=prompt,
+        temperature=0.1,
+        max_tokens=max_tokens,
+        top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+        )
+
+        translation = response['choices'][0]['text']
+
+    # facebook multi lingual translation model
+    else:
         # get the model and tokenizer
         translator_model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
         tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
@@ -51,11 +77,12 @@ def translate_text(text: str, src_lang: str, target_lang: str, translator: str) 
 
         encoded_text = tokenizer(text, return_tensors="pt")
         generated_tokens = translator_model.generate(**encoded_text, forced_bos_token_id=tokenizer.get_lang_id(target_lang))
-        translation = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
-    
-    return translation[0]
+        translation = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
-def whisper_segments_to_vtt_data(result_segments, src_lan, target_lan):
+    
+    return translation
+
+def whisper_segments_to_vtt_data(result_segments, src_lan, target_lan, openai_apikey, translation_model):
   """
   This function iterates through all whisper
   segements to format them into WebVTT.
@@ -70,12 +97,12 @@ def whisper_segments_to_vtt_data(result_segments, src_lan, target_lan):
     end_ = timedelta_to_videotime(str(end_))
     data += f"{start_} --> {end_}\n"
     text = segment.get('text').strip()
-    translated_text = translate_text(text, src_lan, target_lan, 'mtm')
+    translated_text = translate_text(text, src_lan, target_lan, openai_apikey, translation_model)
     data += f"{text}\n({translated_text})\n\n"
   return data
 
 
-def transcribe_from_link(link, src_lan, target_lan):
+def transcribe_from_link(link, src_lan, target_lan, openai_apikey, translation_model='mtm'):
 	if link != "":
 		print("Transcribing...")	
 		yt = YouTube(link)
@@ -105,7 +132,8 @@ def transcribe_from_link(link, src_lan, target_lan):
 			result = model.transcribe(file_mp4)
 			json_object = json.dumps(result, indent=4)
 
-			caption_data = whisper_segments_to_vtt_data(result['segments'], src_lan, target_lan)
+			print(openai_apikey)
+			caption_data = whisper_segments_to_vtt_data(result['segments'], src_lan, target_lan, openai_apikey, translation_model)
 			file_vtt = base + '.vtt'
 			export_file = pathlib.Path(file_vtt)
 			export_file.write_text(caption_data)
@@ -126,10 +154,12 @@ def login():
         url = request.form['url']
         src_lan = request.form['src_lan']
         target_lan = request.form['target_lan']
+        openai_apikey = request.form['openai_apikey']
+        translation_model = request.form['translation_model']
         id=extract.video_id(url)
 
         # start transcribe
-        base = transcribe_from_link(url, src_lan, target_lan)
+        base = transcribe_from_link(url, src_lan, target_lan, openai_apikey, translation_model)
         print("Generating trascript DONE...")
         return redirect(url_for('success', name=id, lan=src_lan))
 
