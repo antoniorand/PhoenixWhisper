@@ -6,12 +6,12 @@ import pathlib
 
 app = Flask(__name__)
  
+webapp_path = os.path.dirname(os.path.realpath(__file__))
+
 @app.route('/', methods=['GET'])
 def home():
-    file = open('video_list.txt',mode='r')
-    video_list = file.read()
-    # close the file
-    file.close()
+    with open(os.path.join(webapp_path, 'video_list.txt'),mode='r') as file:
+        video_list = file.read()
     return render_template('form.html', video_list=video_list)
  
 
@@ -65,7 +65,7 @@ def transcribe_from_link(link):
 		video = yt.streams.filter(only_audio=True).first()
 		
 		# # check for destination to save file
-		destination = 'static\\resources'
+		destination = os.path.join(webapp_path, 'static', 'resources')
 
 		id = extract.video_id(link)
 		
@@ -77,7 +77,7 @@ def transcribe_from_link(link):
 		# save the file
 		base, ext = os.path.splitext(out_file)
 		file_mp4 = base + '.mp4'
-		
+
 		# result of success
 		json_file = base + ".vtt"
         
@@ -96,7 +96,7 @@ def transcribe_from_link(link):
 			# with open(json_file, "w") as outfile:
 			# 	outfile.write(json_object)
 
-			with open("video_list.txt", "a") as file_object:
+			with open(os.path.join(webapp_path, "video_list.txt"), "a") as file_object:
 				file_object.write(f"{yt.title}: {link}\n")
 
 		return base
