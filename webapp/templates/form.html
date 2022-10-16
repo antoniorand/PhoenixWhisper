@@ -1,36 +1,94 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="../static/style.css">
+  <head lang="en">
+    <link rel="stylesheet" href="../static/style.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PhoenixWhisper</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
   </head>
-  
+
   <body>
-    <div class="">
-    <form action="/submit" method="post">
-      <p>Enter YouTube video:</p>
-      <p><input required type="text" name="url" /></p>
-      <p>Choose translation (es, de, fr, vi, sv):</p>
-      <p><input required type="text" name="target_lan" /></p>
-      <p>Enter OpenAI API key:</p>
-      <p><input type="text" name="openai_apikey" /></p>
-      <p>Translation model (gpt, mtm):</p>
-      <p><input type="text" name="translation_model" /></p>
-      <p>Initial Prompt for "Todays is a beautiful day":</p>
-      <p><input type="text" name="initial_prompt" /></p>
-      <p id="test"><input type="submit" value="submit" /></p>
-      <p id="waiting" style="display: none;">Please wait...</p>
-      <br />
-      <script>
-        var x;
-        x = document.getElementById("test");
-        y = document.getElementById("waiting");
-        function display() {
-          y.style.display = "block";
-        }
-        x.onclick = display;
-      </script>
-      <h3>A list of videos that have transcipt ready</h3>
-      <p style="white-space: pre-wrap;">{{ video_list }}</p>
-    </form>
-  </div>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid justify-content-center">
+        <h2 class="navbar-text">Phoenix Whisper for Transcribe Videos</h2>
+      </div>
+    </nav>
+    <div class="container-fluid text-center bg-light vh-100 min-vh-100 mt-1">
+      <div class="row">
+        <div class="col">
+          <form action="/submit" method="post">
+            <div class="mb-3">
+              <label for="inputUrl" class="form-label fw-bold">Enter YouTube video:</label>
+              <input required type="url" name="url" class="form-control" />
+            </div>
+            <div class="mb-3 fw-bold">
+              <label for="FormControlSelect">Choose a translation language</label>
+              <select class="form-control" id="eFormControlSelect" name="target_lan">
+                <option value="en">en</option>
+                <option value="de">de</option>
+                <option value="fr">fr</option>
+                <option value="es">es</option>
+                <option value="vi">vi</option>
+                <option value="sv">sv</option>
+              </select>
+            </div>
+            <div class="mb-3 fw-bold">
+              <label for="FormControlSelect2">Choose a translation model</label>
+              <select class="form-control" id="eFormControlSelect2" name="translation_model">
+                <option value="mtm">MTM</option>
+                <option value="gpt">GPT</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="inputUrl" class="form-label fw-bold">Enter OpenAI API key:</label>
+              <input type="text" name="openai_apikey" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label for="inputUrl" class="form-label fw-bold">Initial Prompt for "Todays is a beautiful day":</label>
+              <input type="text" name="initial_prompt" class="form-control" />
+            </div>
+            <button id="test" type="submit" value="submit" class="btn btn-dark">Submit</button>
+            <p id="waiting" style="display: none">Please wait...</p>
+            <br />
+            <script>
+              var x;
+              x = document.getElementById("test");
+              y = document.getElementById("waiting");
+              function display() {
+                y.style.display = "block";
+              }
+              x.onclick = display;
+            </script>
+          </form>
+        </div>
+        <div class="col">
+          <p class="fs-3 fw-bold">
+            A list of videos that have transcipt ready:
+          </p>
+          <p style="white-space: pre-wrap">{{ video_list }}</p>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+      integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

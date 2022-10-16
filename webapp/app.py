@@ -151,13 +151,17 @@ def transcribe_from_link(link, target_lan, openai_apikey, translation_model, ini
         if not os.path.exists(lan_file):
             if not os.path.exists(json_file):
                 # if vtt file does not exist, we create it
-                model = whisper.load_model("base")
+                model = whisper.load_model("tiny")
                 result = model.transcribe(file_mp4)
 
                 # Save original caption_data
                 caption_data = whisper_segments_to_vtt_data(result['segments'])
                 file_vtt = base + '.vtt'
                 with open(file_vtt, "w", encoding='utf-8') as outfile:
+                    outfile.write(caption_data)
+                
+                # save the caption for the original language
+                with open(base + f'.{result["language"]}.vtt', "w", encoding='utf-8') as outfile:
                     outfile.write(caption_data)
 
                 print(yt.title + ": Transcript has been successfully generated")
@@ -169,13 +173,14 @@ def transcribe_from_link(link, target_lan, openai_apikey, translation_model, ini
                 with open(os.path.join(webapp_path, "video_list.txt"), "a") as file_object:
                     file_object.write(f"{yt.title}: {link}\n")
 
-                output = translate_text(output=result, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model, initial_prompt=initial_prompt)
+                if result["language"] != target_lan: # check if original language is different from target language
+                    output = translate_text(output=result, target_lan=target_lan, openai_apikey=openai_apikey, translation_model=translation_model, initial_prompt=initial_prompt)
 
-                # Save translation file_vtt
-                caption_data = whisper_segments_to_vtt_data(output)
-                translate_vtt = base + f'.{target_lan}.vtt'
-                with open(translate_vtt, "w", encoding='utf-8') as outfile:
-                    outfile.write(caption_data)
+                    # Save translation file_vtt
+                    caption_data = whisper_segments_to_vtt_data(output)
+                    translate_vtt = base + f'.{target_lan}.vtt'
+                    with open(translate_vtt, "w", encoding='utf-8') as outfile:
+                        outfile.write(caption_data)
 
             else: 
                 # read json file and generate translated caption
