@@ -1,12 +1,20 @@
 <html>
+  <head>
+    <link rel="stylesheet" href="../static/style.css">
+  </head>
+  
   <body>
+    <div class="">
     <form action="/submit" method="post">
       <p>Enter YouTube video:</p>
       <p><input type="text" name="url" /></p>
-      <p>Enter language:</p>
-      <p><input type="text" name="lan" /></p>
+      <p>Choose translation (es, de):</p>
+      <p><input type="text" name="target_lan" /></p>
+      <p>Enter OpenAI API key:</p>
+      <p><input type="text" name="openai_apikey" /></p>
+      <p>Translation model {gpt, mtm}:</p>
+      <p><input type="text" name="translation_model" /></p>
       <p id="test"><input type="submit" value="submit" /></p>
-      <!-- <p>click</p> -->
       <p id="waiting" style="display: none;">Please wait...</p>
       <br />
       <script>
@@ -21,5 +29,6 @@
       <h3>A list of videos that have transcipt ready</h3>
       <p style="white-space: pre-wrap;">{{ video_list }}</p>
     </form>
+  </div>
   </body>
 </html>
