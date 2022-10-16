@@ -1,7 +1,7 @@
 # Phoenix Whisper
 
 ### About
-This is the project for an OpenAI Whisper with GPT/MTM use case: a language learning platform that lets you watch your favorite YouTube videos with dual subtitles
+This is the project using OpenAI Whisper with GPT/MTM language model to create a language learning platform that lets you watch your favorite YouTube videos with dual interactive transcripts
 
 ![Home page](home_page.png)
 ![App Interface](transcript.png)
