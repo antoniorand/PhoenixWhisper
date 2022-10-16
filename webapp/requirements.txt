@@ -1,5 +1,5 @@
 pytube
-git+https://github.com/openai/whisper.git -q
+git+https://github.com/openai/whisper.git 
 datetime
 gunicorn
 flask
