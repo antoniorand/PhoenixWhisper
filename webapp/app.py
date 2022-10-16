@@ -3,6 +3,7 @@ from pytube import extract, YouTube
 import os, whisper, json
 import datetime
 import pathlib
+from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
 app = Flask(__name__)
  
@@ -38,8 +39,23 @@ def timedelta_to_videotime(delta):
     final_data = ".".join(parts2)
     return final_data
 
+def translate_text(text: str, src_lang: str, target_lang: str, translator: str) -> str:
+        # facebook multi lingual translation model
+    if translator == 'mtm':
+        # get the model and tokenizer
+        translator_model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
+        tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
 
-def whisper_segments_to_vtt_data(result_segments):
+        # translate
+        tokenizer.src_lang = src_lang
+
+        encoded_text = tokenizer(text, return_tensors="pt")
+        generated_tokens = translator_model.generate(**encoded_text, forced_bos_token_id=tokenizer.get_lang_id(target_lang))
+        translation = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+    
+    return translation[0]
+
+def whisper_segments_to_vtt_data(result_segments, src_lan, target_lan):
   """
   This function iterates through all whisper
   segements to format them into WebVTT.
@@ -54,11 +70,12 @@ def whisper_segments_to_vtt_data(result_segments):
     end_ = timedelta_to_videotime(str(end_))
     data += f"{start_} --> {end_}\n"
     text = segment.get('text').strip()
-    data += f"{text}\n\n"
+    translated_text = translate_text(text, src_lan, target_lan, 'mtm')
+    data += f"{text}\n({translated_text})\n\n"
   return data
 
 
-def transcribe_from_link(link):
+def transcribe_from_link(link, src_lan, target_lan):
 	if link != "":
 		print("Transcribing...")	
 		yt = YouTube(link)
@@ -88,7 +105,7 @@ def transcribe_from_link(link):
 			result = model.transcribe(file_mp4)
 			json_object = json.dumps(result, indent=4)
 
-			caption_data = whisper_segments_to_vtt_data(result['segments'])
+			caption_data = whisper_segments_to_vtt_data(result['segments'], src_lan, target_lan)
 			file_vtt = base + '.vtt'
 			export_file = pathlib.Path(file_vtt)
 			export_file.write_text(caption_data)
@@ -107,13 +124,14 @@ def login():
     if request.method == 'POST':
         print(request.form)
         url = request.form['url']
-        lan = request.form['lan']
+        src_lan = request.form['src_lan']
+        target_lan = request.form['target_lan']
         id=extract.video_id(url)
 
         # start transcribe
-        base = transcribe_from_link(url)
+        base = transcribe_from_link(url, src_lan, target_lan)
         print("Generating trascript DONE...")
-        return redirect(url_for('success', name=id, lan=lan))
+        return redirect(url_for('success', name=id, lan=src_lan))
 
  
  
