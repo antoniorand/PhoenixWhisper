@@ -19,7 +19,7 @@ This is the project using OpenAI Whisper with GPT/MTM language model to create <
 Now let's make some coffee while our backend generates the transcripts for you. After the page is ready, enjoy the script! :heart_eyes: (and your coffee too)
 ## Installation
 
-Creating virtual environment:
+Create virtual environment
 ```bash
 cd webapp
 
@@ -37,7 +37,7 @@ pip install git+https://github.com/openai/whisper.git -q
 pip install flask openai sentencepiece
 ```
 
-Running web app
+Run the web app locally at port 5000
 ```bash
 python app.py or flask run
 ```
