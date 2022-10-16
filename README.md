@@ -9,4 +9,3 @@ For this project you need libraries on top of Python:
 pip install --upgrade pytube 
 pip install git+https://github.com/openai/whisper.git -q
 
-These libraries will enable us to create a front-end for our project, download youtube videos and extract audio files from youtube videos respectively.
