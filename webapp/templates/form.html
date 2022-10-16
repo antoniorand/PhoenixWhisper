@@ -23,18 +23,27 @@
               <label for="inputUrl" class="form-label fw-bold">Enter YouTube video URL:</label>
               <input type="text" name="url" class="form-control">
             </div>
-            <div class="mb-3">
-              <label for="inputUrl" class="form-label fw-bold">Enter language:</label>
-              <input type="text" name="lan" class="form-control">
+            <div class="mb-3 fw-bold">
+              <label for="FormControlSelect">Choose a translation language</label>
+              <select class="form-control" id="eFormControlSelect" name="target_lan">
+                <option>en</option>
+                <option>de</option>
+                <option>fr</option>
+                <option>es</option>
+              </select>
             </div>
-            <!-- 
-            <p>Choose translation (es, de):</p>
-            <p><input type="text" name="target_lan" /></p>
-            <p>Enter OpenAI API key:</p>
-            <p><input type="text" name="openai_apikey" /></p>
-            <p>Translation model {gpt, mtm}:</p>
-            <p><input type="text" name="translation_model" /></p>
-            -->
+            <div class="mb-3">
+              <label for="inputAPI" class="form-label fw-bold">Enter OpenAI API key:</label>
+              <input type="text" name="openai_apikey" class="form-control">
+            </div>
+            <div class="mb-3 fw-bold">
+              <label for="FormControlSelect2">Choose a translation model</label>
+              <select class="form-control" id="eFormControlSelect2" name="translation_model">
+                <option>GPT</option>
+                <option>MTM</option>
+              </select>
+            </div>
+
             <button type="submit" class="btn btn-dark">Submit</button>
             
             <!-- <p>click</p> 
