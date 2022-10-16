@@ -36,7 +36,7 @@ body {
 }
 
 .embed-responsive-16by9 {
-  padding-bottom: 56.25%;
+  padding-bottom: 55%;
 }
 
 audio,
@@ -118,7 +118,7 @@ video {
 .wrapper.activity.media.activity-wrapper .video-thumb h4.media-library-item-title,
 .wrapper.activity.media.activity-wrapper .video-thumb p.media-library-item-summary {
   display: inline-block;
-  float: left;
+  /* float: left; */
 }
 .wrapper.activity.media.activity-wrapper .video-item .img-thumbnail,
 .wrapper.activity.media.activity-wrapper .video-thumb .img-thumbnail {
@@ -215,7 +215,7 @@ video::-webkit-media-controls-timeline {
 }
 
 .activity-wrapper {
-  max-width: 746px;
+  /* max-width: 746px; */
 }
 
 .wrapper.activity.media.activity-wrapper .video-toolbar, .wrapper.activity.media.activity-wrapper .audio-toolbar {
