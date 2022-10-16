@@ -14,17 +14,17 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-black mb-5">
       <div class="container-fluid justify-content-center">
-        <h2 class="navbar-text">Phoenix Whisper for Transcribing Videos</h2>
+        <h2 class="navbar-text text-white">Phoenix Whisper for Transcribing Videos</h2>
       </div>
     </nav>
-    <div class="container-fluid text-center bg-light vh-100 min-vh-100 mt-1">
+    <div class="container-fluid text-center bg-white vh-100 min-vh-100 mt-1">
       <div class="row">
         <div class="col">
-          <form action="/submit" method="post">
+          <form action="/submit" method="post" class="px-5">
             <div class="mb-3">
-              <label for="inputUrl" class="form-label fw-bold">Enter YouTube video:</label>
+              <label for="inputUrl" class="form-label fw-bold">Enter YouTube URL</label>
               <input required type="url" name="url" class="form-control" />
             </div>
             <div class="mb-3 fw-bold">
@@ -47,11 +47,11 @@
               </select>
             </div>
             <div class="mb-3">
-              <label for="inputUrl" class="form-label fw-bold">Enter OpenAI API key:</label>
+              <label for="inputUrl" class="form-label fw-bold">Enter OpenAI API key</label>
               <input type="text" name="openai_apikey" class="form-control" />
             </div>
             <div class="mb-3">
-              <label for="inputUrl" class="form-label fw-bold">Initial Prompt for "Todays is a beautiful day":</label>
+              <label for="inputUrl" class="form-label fw-bold">Initial Prompt for "Todays is a beautiful day"</label>
               <input type="text" name="initial_prompt" class="form-control" />
             </div>
             <button id="test" type="submit" value="submit" class="btn btn-dark">Submit</button>
@@ -68,9 +68,9 @@
             </script>
           </form>
         </div>
-        <div class="col">
+        <div class="col" class="">
           <p class="fs-3 fw-bold">
-            A list of videos that have transcipt ready:
+            A list of videos that have ready transcipts
           </p>
           <p style="white-space: pre-wrap">{{ video_list }}</p>
         </div>
