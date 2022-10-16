@@ -26,7 +26,7 @@
         <ol class="media-library hide-on-load">
             <li class="media-library-item col-sm-3">
                 <button class="media-library-item-btn" data-video-src="{{url_for('static', filename='resources/' + name +'.mp4')}}"
-                    data-captions-src="{{url_for('static', filename='resources/' + name + '.vtt')}}" data-transcript-src="{{url_for('static', filename='resources/' + name + '.vtt')}}">                  
+                    data-captions-src="{{url_for('static', filename='resources/' + name + "." + target_lan +'.vtt')}}" data-transcript-src="{{url_for('static', filename='resources/' + name + "." + target_lan + '.vtt')}}">                  
                 </button>
             </li>
         </ol>

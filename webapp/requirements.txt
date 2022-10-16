@@ -4,3 +4,5 @@ datetime
 gunicorn
 openai
 flask
+flask
+sentencepiece
