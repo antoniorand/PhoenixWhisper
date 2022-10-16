@@ -27,7 +27,8 @@ python -m venv venv
 
 source venv/Scripts/activate (Windows)
 ```
-For this project you need libraries on top of Python:
+
+Install dependencies for Python
 ```bash
 pip install --upgrade pytube 
 
