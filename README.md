@@ -1,5 +1,5 @@
 # PhoenixWhisper
-This is the project for an OpenAI Whisper and GPT/MTM use case: a language learning platform that lets you watch your favorite YouTube videos with two subtitles that run in parallel with the video
+This is the project for an OpenAI Whisper with GPT/MTM use case: a language learning platform that lets you watch your favorite YouTube videos with dual subtitles
 
 Creating a Virtual Environment:
 ```bash
