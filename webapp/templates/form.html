@@ -22,6 +22,7 @@
     <div class="container-fluid text-center bg-white vh-100 min-vh-100 mt-1">
       <div class="row">
         <div class="col">
+          <p>Please choose the YouTube URL on the list and choose any languages</p>
           <form action="/submit" method="post" class="px-5">
             <div class="mb-3">
               <label for="inputUrl" class="form-label fw-bold">Enter YouTube URL</label>
@@ -30,32 +31,32 @@
             <div class="mb-3 fw-bold">
               <label for="FormControlSelect">Choose a translation language</label>
               <select class="form-control" id="eFormControlSelect" name="target_lan">
-                <option value="en">en</option>
-                <option value="de">de</option>
-                <option value="fr">fr</option>
-                <option value="es">es</option>
-                <option value="vi">vi</option>
-                <option value="sv">sv</option>
-                <option value="el">el</option>
+                <option value="en">English</option>
+                <option value="de">German</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+                <option value="vi">Vietnamese</option>
+                <option value="sv">Swedish</option>
+                <option value="el">Greek</option>
               </select>
             </div>
-            <div class="mb-3 fw-bold">
+            <div style="display: none" class="mb-3 fw-bold">
               <label for="FormControlSelect2">Choose a translation model</label>
               <select class="form-control" id="eFormControlSelect2" name="translation_model">
                 <option value="mtm">MTM</option>
                 <option value="gpt">GPT</option>
               </select>
             </div>
-            <div class="mb-3">
+            <div style="display: none"  class="mb-3">
               <label for="inputUrl" class="form-label fw-bold">Enter OpenAI API key</label>
               <input type="text" name="openai_apikey" class="form-control" />
             </div>
-            <div class="mb-3">
+            <div style="display: none" class="mb-3">
               <label for="inputUrl" class="form-label fw-bold">Initial Prompt for "Todays is a beautiful day"</label>
               <input type="text" name="initial_prompt" class="form-control" />
             </div>
             <button id="test" type="submit" value="submit" class="btn btn-dark">Submit</button>
-            <p id="waiting" style="display: none">Please wait...</p>
+            <p id="waiting" class="mt-3" style="display: none">Please wait...</p>
             <br />
             <script>
               var x;
@@ -69,8 +70,8 @@
           </form>
         </div>
         <div class="col" class="">
-          <p class="fs-3 fw-bold">
-            A list of videos that have ready transcipts
+          <p class="fs-3 fw-bold mt-3">
+            A list of YouTube videos
           </p>
           <p style="white-space: pre-wrap">{{ video_list }}</p>
         </div>
