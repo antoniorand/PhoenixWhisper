@@ -42,3 +42,5 @@ Run the web app locally at port 5000
 python app.py or flask run
 ```
 
+
+This is the project fo the Phoenix team in Whisper Hackathon from OpenAI
