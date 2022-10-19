@@ -43,4 +43,4 @@ python app.py or flask run
 ```
 
 
-This is the project fo the Phoenix team in Whisper Hackathon from OpenAI
+This is the project for the Phoenix team in Whisper Hackathon from OpenAI
